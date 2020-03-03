@@ -4,12 +4,33 @@
 
 [Delegates, Events and Lambda Expressions](#delegates-events-and-lambda-expressions)
 - [Memory](#memory)
+  - [Value Types](#value-types)
+  - [Reference Types](#reference-types)
 - [Delegates](#delegates)
 - [Lambda Expressions](#lamba-expressions)
   - [Expression Body Members](#expression-body-members)
   - [Nullables](#nullables)
 - [Events](#events)
 
+[Using .NET Framework APIs](#using-dotnet-framework-apis)
+
+[Generics in Depth](#generics-in-depth)
+
+[Additional C# Language Features](#additional-c-language-features)
+
+[LINQ to Objects](#linq-to-objects)
+
+[What's New in C# 8](#whats-new-in-c-8)
+
+[Monitoring and Debugging Applications](#monitoring-and-debugging-applications)
+
+[Unit Testing with xUnit](#unit-testing-with-xunit)
+
+[Test-driven Development](#test-driven-development)
+
+[Dependency Injection](#dependency-injection)
+
+[Test Doubles and Mocking](#test-doubles-and-mocking)
 
 ## Delegates, events and lambda expressions
 ### Memory
@@ -21,7 +42,7 @@ e.g. int, doubles, bools
 The actual values get saved in the stack as they are fixed size.
 The stack is evaluated at compile.
 
-#### Reference data
+#### Reference Types
 
 e.g. string and complex data types
 
@@ -59,6 +80,8 @@ Thing 1 = new thing();
 ```
 It's not until you use the `new` key word and 
 call the constructor that memory is allocated
+
+[[Back to Top]](#contents)
 
 ### Delegates
 
@@ -110,6 +133,8 @@ Examples:
 `delegate string C()` = `Func<string>`
 
 `delegate void D(int i)` = `Action<int>`
+
+[[Back to Top]](#contents)
 
 ### Lamba Expressions
 
@@ -174,6 +199,8 @@ You can also use it in a similar way to an if else statement:
 var x = (doSomething) ? "yay" : "Oh no";
 ```
 
+[[Back to Top]](#contents)
+
 ### Events
 Events are very similar to delegates they use the `event` key word.
 
@@ -207,4 +234,44 @@ BankAccount acc1 = new BankAccount("Peter");
 acc1.ProtectionLimitExceeded += (source, e) => Console.WriteLine($"{e.AccountHolder} has gone over the protection limit!");             
 ```
 
+[[Back to Top]](#contents)
 
+## Using dotNET Framework APIs
+
+[[Back to Top]](#contents)
+
+## Generics in Depth
+
+[[Back to Top]](#contents)
+
+## Additional C# Language Features
+
+[[Back to Top]](#contents)
+
+## LINQ to Objects
+
+[[Back to Top]](#contents)
+
+## What's New in C# 8
+
+[[Back to Top]](#contents)
+
+## Monitoring and Debugging Applications
+
+[[Back to Top]](#contents)
+
+## Unit Testing with xUnit
+
+[[Back to Top]](#contents)
+
+## Test-driven Development
+
+[[Back to Top]](#contents)
+
+## Dependency Injection
+
+[[Back to Top]](#contents)
+
+## Test Doubles and Mocking
+
+[[Back to Top]](#contents)

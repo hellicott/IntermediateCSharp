@@ -1,15 +1,27 @@
 # IntermediateCSharp
 
-## Memory
+## Contents:
 
-### Value Types
+[Delegates, Events and Lambda Expressions](#delegates-events-and-lambda-expressions)
+- [Memory](#memory)
+- [Delegates](#delegates)
+- [Lambda Expressions](#lamba-expressions)
+  - [Expression Body Members](#expression-body-members)
+  - [Nullables](#nullables)
+- [Events](#events)
+
+
+## Delegates, events and lambda expressions
+### Memory
+
+#### Value Types
 
 e.g. int, doubles, bools
 
 The actual values get saved in the stack as they are fixed size.
 The stack is evaluated at compile.
 
-### Reference data
+#### Reference data
 
 e.g. string and complex data types
 
@@ -17,7 +29,7 @@ The actual value gets saved in the heap and a reference to that value is saved i
 This is because we don't know how large the object might be.
 The heap is evaluated at run time.
 
-### Memory Allocation
+#### Memory Allocation
 
 In java all class/own data types are reference types.
 In C# we have a choice over this. We can decide which is more relevant.
@@ -48,7 +60,7 @@ Thing 1 = new thing();
 It's not until you use the `new` key word and 
 call the constructor that memory is allocated
 
-## Delegates
+### Delegates
 
 Help prevent code duplication.
 
@@ -99,7 +111,7 @@ Examples:
 
 `delegate void D(int i)` = `Action<int>`
 
-## Lamba Functions
+### Lamba Expressions
 
 Allow you to write an anonymous function at the point where you'd like to use it.
 
@@ -137,7 +149,7 @@ def doSomething()
 This has the benefit of reabability, without code duplication and still being able to 
 use variables as the local function is within the same scope.
 
-## Expression body members
+#### Expression body members
 You can have dynamically evaluated class properties. It is evaluated everytime you access the value.
 
 For example:
@@ -148,7 +160,7 @@ DateTime date2 => datetime.now();
 Here `date1` will always be the same when you access it. However `date 2` will call the `datetime.now()` 
 function everytime you access it.
 
-## Nullables
+#### Nullables
 You can have nullable variables by defining it with `?` after the type.
 
 There are also some shortcuts to work with values which may be null. They allow you to set a default return value
@@ -161,3 +173,38 @@ You can also use it in a similar way to an if else statement:
 ```
 var x = (doSomething) ? "yay" : "Oh no";
 ```
+
+### Events
+Events are very similar to delegates they use the `event` key word.
+
+Both allow you to multicast.
+```
+MathsFunction f = Math.Cos;
+f += Math.Sin;
+```
+Using this function will carry out both the sin and cos, however it will only return the result of the last one
+*not* chain them together. You would usually use multicasting with functions which have side effects but not return values
+as you would only get the return of one value. 
+
+If an event hasn't been subscribed to (nothing uses it in a multicast) then its value will be null. You should always
+check for null before raising it to avoid errors
+
+You can handle events in a few different ways:
+```
+BankAccount acc1 = new BankAccount("Peter");
+acc1.Overdrawn += OnOverdrawn;
+
+// Event handler method
+private static void OnOverdrawn(object source, BankAccountEventArgs e)
+{
+    Console.WriteLine($"{e.AccountHolder} has overdrawn! Current Balance: {e.Balance}");
+}
+```
+The one above uses a conventional event-handler method. Another option is to use a lambda function which
+will infer the type:
+```
+BankAccount acc1 = new BankAccount("Peter");
+acc1.ProtectionLimitExceeded += (source, e) => Console.WriteLine($"{e.AccountHolder} has gone over the protection limit!");             
+```
+
+

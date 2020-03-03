@@ -350,6 +350,12 @@ Visual studio makes it easy to package and upload your own NuGet Packages, local
 [[Back to Top]](#contents)
 
 ## Generics in Depth
+Compile errors are better than runtime errors. Compile errors are spotted by developers early on and won't get past 
+a build or a pull request. Runtime errors can be harder to spot and therefore are possible to be spotted by customers.
+
+Using raw types which involved using the type `object` rather than a specific type will not give compiler errors, 
+but can have a problem at runtime. and as discussed, we don't want that. Generic types allow for type-safe classes 
+which will compiler errors rather than holding back til runtime. It is usually better practice to use these.
 
 [[Back to Top]](#contents)
 

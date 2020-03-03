@@ -13,6 +13,10 @@
 - [Events](#events)
 
 [Using .NET Framework APIs](#using-dotnet-framework-apis)
+- [Exception handling](#exception-handling)
+- [Collections](#collections)
+- [Regular Expressions](#regular-expressions)
+- [NuGet packages](#nuget-packages)
 
 [Generics in Depth](#generics-in-depth)
 
@@ -214,7 +218,16 @@ Using this function will carry out both the sin and cos, however it will only re
 as you would only get the return of one value. 
 
 If an event hasn't been subscribed to (nothing uses it in a multicast) then its value will be null. You should always
-check for null before raising it to avoid errors
+check for null before raising it to avoid `NullReferenceExceptions`. You can do this with an if statement:
+```
+if (Overdrawn != null)
+{
+    Overdrawn(this, new BankAccountEventArgs(balance, accountHolder));
+}
+```
+```
+Overdrawn?.Invoke(this, new BankAccnoutEventArgs(balance, accountHolder));
+```
 
 You can handle events in a few different ways:
 ```
@@ -234,9 +247,105 @@ BankAccount acc1 = new BankAccount("Peter");
 acc1.ProtectionLimitExceeded += (source, e) => Console.WriteLine($"{e.AccountHolder} has gone over the protection limit!");             
 ```
 
+In legacy code you might find an anonymous method (a delegate):
+```
+BankAccount acc1 = new BankAccount("Peter");
+acc1.Overdrawn += delegate(object sender, BankAccountEventArgs e)
+{
+    Console.WriteLine($"{e.AccountHolder} has overdrawn! Current Balance: {e.Balance}");
+}
+```
+
 [[Back to Top]](#contents)
 
 ## Using dotNET Framework APIs
+
+### Exception handling
+This is *not* for finding errors or fixing them, it is only for making the errors known when they happen - a communitcation
+mechanism to send up so someone/something else can deal with it. In this way it is similar to an event.The main
+difference between events and excpetions is that exceptions *must* be caught, where as events do no necessarily need to be 
+handled.
+
+All exceptions inherit from `System.Exception`
+
+Handling Exceptions uses 3 key words. 
+The `try` block contains code that might go wrong.
+Any `catch` blocks specify the type of error you want to catch and contain how to handle this exception.
+The `finally` block is optional but if it is there it is always called, whether there was an exception or not. It should be used to tidy up, for example
+closing a file or disconnecting from a network.
+
+Another option for the use case of closing a file is to use the `using` key word. Doing this means you don't need to 
+close the file in a `finally` block, as instead it is automatically tidied up at the close of the `using` block
+
+Exceptions are caught in the order the catch blocks are placed, so if you were to write this:
+```
+try
+{
+    // do stuff
+}catch(Exception)
+{
+    //handle1
+}catch(IOException)
+{
+    //handle2
+}
+```
+The `handle2` code would never be called as any error would be caught by the first catch block
+
+There is also exception filtering which can be used like this:
+```
+catch (exception) when (condition)
+```
+
+When creating your own exceptions you must inherit from `System.Exception` and implement the 3 methods. They use
+the `innerException` which often contains more detailed information.
+
+To throw an exception you use the `throw` key word
+
+### Collections
+
+**Arrays**
+
+Arrays are always reference types. When creating one you speficy the size which is used for memory allocation. The downside
+here is that once you have set this you can't increase its size. It very unusual to know the size of a collection before
+you want to use it so often other collections are used.
+
+**Generic collections** 
+
+e.g. `List<T>`, `HashSet<T>` where `T` is the type and `Dictionary<K,V> where `K` and `V` are the types of the keys and 
+the values
+
+These force all elements to be the same type (or you'll get a compilation error). Anoth benefit is that you can add as many
+elements as you want to them at any time.
+
+**Raw collections**
+
+In legacy code you may find something like `ArrayList`. These are collections of objects, and therefore might be any type
+in there and can involve a lot of casting.
+
+### Regular Expressions
+Search for particular text items in strings using `Regex` class
+
+|RE|Desc|Matches| Doesn't match|
+|---|---|---|---|
+|abc|matches the exact letters in the exact order|abc|def|
+|.|matched any single character| r| rawr|
+|[a-zA-Z]| matches any character in the set|p|9|
+|[^a-zA-Z]|...
+|\d|A digit|6|q
+|\w|...
+
+Useful Regex methods:
+`Match` will find the first match in the string.
+`Matches` finds all the non-overlapping matches in the string.
+`Replace` searches for match and replaces it
+
+### NuGet packages
+C# started with one standard library. It was large and was updated infrequently. To solve this problem they split up 
+this large package into NuGet packages where you can search through microsoft and 3rd part packages and get the things
+you actually need. 
+
+Visual studio makes it easy to package and upload your own NuGet Packages, locally or publicly.
 
 [[Back to Top]](#contents)
 

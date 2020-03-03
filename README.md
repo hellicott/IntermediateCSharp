@@ -69,7 +69,37 @@ var x = doSomething(Math.Sin, a, b);
 Notice we are not calling the `Math.Sin` function as we are not using brackets. Instead we are giving it as 
 a delegate. This is allowed because the function has the same input and output values as defined in the delegate.
 
-### Lamba Functions
+You can also have anonymous delegates. If you don't want to create a new Delegate type, you could achieve the same thing.
+
+So this:
+```
+public void Something(Func<double, double>, int a, int b)
+{
+	// do stuff
+}
+```
+Is the same as this:
+```
+public void Something(MathsFunction, int a, int b)
+{
+	// do stuff
+}
+```
+
+You can do this with as many inputs as you like, but the last one will always be the return type. When there is no
+return type, you must use an Action, instead of a Func.
+
+Examples:
+
+`delegate string A(int i)` = `Func<int, string>`
+
+`delegate string B(int i, strings,  double d)` = `Func<int, string, double, string>`
+
+`delegate string C()` = `Func<string>`
+
+`delegate void D(int i)` = `Action<int>`
+
+## Lamba Functions
 
 Allow you to write an anonymous function at the point where you'd like to use it.
 
@@ -107,3 +137,27 @@ def doSomething()
 This has the benefit of reabability, without code duplication and still being able to 
 use variables as the local function is within the same scope.
 
+## Expression body members
+You can have dynamically evaluated class properties. It is evaluated everytime you access the value.
+
+For example:
+```
+DateTime date1 = datetime.now();
+DateTime date2 => datetime.now();
+```
+Here `date1` will always be the same when you access it. However `date 2` will call the `datetime.now()` 
+function everytime you access it.
+
+## Nullables
+You can have nullable variables by defining it with `?` after the type.
+
+There are also some shortcuts to work with values which may be null. They allow you to set a default return value
+if something is null
+```
+var x = value ?? default;
+```
+
+You can also use it in a similar way to an if else statement:
+```
+var x = (doSomething) ? "yay" : "Oh no";
+```

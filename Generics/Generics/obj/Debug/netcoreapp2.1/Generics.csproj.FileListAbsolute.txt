@@ -1,0 +1,11 @@
+C:\Users\HEllicott\Documents\Training\Intermediate C#\CSharpDev\Student\Student-04-Generics\Generics\Generics\bin\Debug\netcoreapp2.1\Generics.deps.json
+C:\Users\HEllicott\Documents\Training\Intermediate C#\CSharpDev\Student\Student-04-Generics\Generics\Generics\bin\Debug\netcoreapp2.1\Generics.runtimeconfig.json
+C:\Users\HEllicott\Documents\Training\Intermediate C#\CSharpDev\Student\Student-04-Generics\Generics\Generics\bin\Debug\netcoreapp2.1\Generics.runtimeconfig.dev.json
+C:\Users\HEllicott\Documents\Training\Intermediate C#\CSharpDev\Student\Student-04-Generics\Generics\Generics\bin\Debug\netcoreapp2.1\Generics.dll
+C:\Users\HEllicott\Documents\Training\Intermediate C#\CSharpDev\Student\Student-04-Generics\Generics\Generics\bin\Debug\netcoreapp2.1\Generics.pdb
+C:\Users\HEllicott\Documents\Training\Intermediate C#\CSharpDev\Student\Student-04-Generics\Generics\Generics\obj\Debug\netcoreapp2.1\Generics.csprojAssemblyReference.cache
+C:\Users\HEllicott\Documents\Training\Intermediate C#\CSharpDev\Student\Student-04-Generics\Generics\Generics\obj\Debug\netcoreapp2.1\Generics.csproj.CoreCompileInputs.cache
+C:\Users\HEllicott\Documents\Training\Intermediate C#\CSharpDev\Student\Student-04-Generics\Generics\Generics\obj\Debug\netcoreapp2.1\Generics.AssemblyInfoInputs.cache
+C:\Users\HEllicott\Documents\Training\Intermediate C#\CSharpDev\Student\Student-04-Generics\Generics\Generics\obj\Debug\netcoreapp2.1\Generics.AssemblyInfo.cs
+C:\Users\HEllicott\Documents\Training\Intermediate C#\CSharpDev\Student\Student-04-Generics\Generics\Generics\obj\Debug\netcoreapp2.1\Generics.dll
+C:\Users\HEllicott\Documents\Training\Intermediate C#\CSharpDev\Student\Student-04-Generics\Generics\Generics\obj\Debug\netcoreapp2.1\Generics.pdb

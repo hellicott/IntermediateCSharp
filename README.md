@@ -2,43 +2,25 @@
 
 ## Contents:
 
-[Delegates, Events and Lambda Expressions](#delegates-events-and-lambda-expressions)
-- [Memory](#memory)
-  - [Value Types](#value-types)
-  - [Reference Types](#reference-types)
-- [Delegates](#delegates)
-- [Lambda Expressions](#lamba-expressions)
-  - [Expression Body Members](#expression-body-members)
-  - [Nullables](#nullables)
-- [Events](#events)
-
-[Using .NET Framework APIs](#using-dotnet-framework-apis)
-- [Exception handling](#exception-handling)
-- [Collections](#collections)
-- [Regular Expressions](#regular-expressions)
-- [NuGet packages](#nuget-packages)
-
-[Generics in Depth](#generics-in-depth)
-- [Constraints](#constraints)
-- [Inheritance](#inheritance)
-
-[Additional C# Language Features](#additional-c-language-features)
-
-[LINQ to Objects](#linq-to-objects)
-
-[What's New in C# 8](#whats-new-in-c-8)
-
-[Monitoring and Debugging Applications](#monitoring-and-debugging-applications)
-
-[Unit Testing with xUnit](#unit-testing-with-xunit)
-
-[Test-driven Development](#test-driven-development)
-
-[Dependency Injection](#dependency-injection)
-
-[Test Doubles and Mocking](#test-doubles-and-mocking)
+- [Delegates, Events and Lambda Expressions](#delegates-events-and-lambda-expressions)
+- [Using .NET Framework APIs](#using-dotnet-framework-apis)
+- [Generics in Depth](#generics-in-depth)
+- [Additional C# Language Features](#additional-c-language-features)
+- [LINQ to Objects](#linq-to-objects)
+- [What's New in C# 8](#whats-new-in-c-8)
+- [Monitoring and Debugging Applications](#monitoring-and-debugging-applications)
+- [Unit Testing with xUnit](#unit-testing-with-xunit)
+- [Test-driven Development](#test-driven-development)
+- [Dependency Injection](#dependency-injection)
+- [Test Doubles and Mocking](#test-doubles-and-mocking)
 
 ## Delegates, events and lambda expressions
+**Contents:**
+- [Memory](#memory)
+- [Delegates](#delegates)
+- [Lambda Expressions](#lamba-expressions)
+- [Events](#events)
+
 ### Memory
 
 #### Value Types
@@ -87,7 +69,7 @@ Thing 1 = new thing();
 It's not until you use the `new` key word and 
 call the constructor that memory is allocated
 
-[[Back to Top]](#contents)
+[[Back top of *Delegates, events and lambda expressions*]](#delegates-events-and-lambda-expressions)
 
 ### Delegates
 
@@ -140,7 +122,7 @@ Examples:
 
 `delegate void D(int i)` = `Action<int>`
 
-[[Back to Top]](#contents)
+[[Back top of *Delegates, events and lambda expressions*]](#delegates-events-and-lambda-expressions)
 
 ### Lamba Expressions
 
@@ -205,7 +187,7 @@ You can also use it in a similar way to an if else statement:
 var x = (doSomething) ? "yay" : "Oh no";
 ```
 
-[[Back to Top]](#contents)
+[[Back top of *Delegates, events and lambda expressions*]](#delegates-events-and-lambda-expressions)
 
 ### Events
 Events are very similar to delegates they use the `event` key word.
@@ -257,10 +239,16 @@ acc1.Overdrawn += delegate(object sender, BankAccountEventArgs e)
     Console.WriteLine($"{e.AccountHolder} has overdrawn! Current Balance: {e.Balance}");
 }
 ```
+[[Back top of *Delegates, events and lambda expressions*]](#delegates-events-and-lambda-expressions)
 
 [[Back to Top]](#contents)
 
 ## Using dotNET Framework APIs
+**Contents:**
+- [Exception handling](#exception-handling)
+- [Collections](#collections)
+- [Regular Expressions](#regular-expressions)
+- [NuGet packages](#nuget-packages)
 
 ### Exception handling
 This is *not* for finding errors or fixing them, it is only for making the errors known when they happen - a communitcation
@@ -304,6 +292,8 @@ the `innerException` which often contains more detailed information.
 
 To throw an exception you use the `throw` key word
 
+[[Back to top of *Using .NET Framework APIs*]](#using-dotnet-framework-apis)
+
 ### Collections
 
 **Arrays**
@@ -325,6 +315,8 @@ elements as you want to them at any time.
 In legacy code you may find something like `ArrayList`. These are collections of objects, and therefore might be any type
 in there and can involve a lot of casting.
 
+[[Back to top of *Using .NET Framework APIs*]](#using-dotnet-framework-apis)
+
 ### Regular Expressions
 Search for particular text items in strings using `Regex` class
 
@@ -342,6 +334,8 @@ Useful Regex methods:
 `Matches` finds all the non-overlapping matches in the string.
 `Replace` searches for match and replaces it
 
+[[Back to top of *Using .NET Framework APIs*]](#using-dotnet-framework-apis)
+
 ### NuGet packages
 C# started with one standard library. It was large and was updated infrequently. To solve this problem they split up 
 this large package into NuGet packages where you can search through microsoft and 3rd part packages and get the things
@@ -349,10 +343,18 @@ you actually need.
 
 Visual studio makes it easy to package and upload your own NuGet Packages, locally or publicly.
 
+[[Back to top of *Using .NET Framework APIs*]](#using-dotnet-framework-apis)
+
 [[Back to Top]](#contents)
 
 ## Generics in Depth
-[code](Generics/Generics)
+**Contents:**
+
+- [Constraints](#constraints)
+- [Inheritance](#inheritance)
+
+[[Example Code]](Generics/Generics)
+
 Compile errors are better than runtime errors. Compile errors are spotted by developers early on and won't get past 
 a build or a pull request. Runtime errors can be harder to spot and therefore are possible to be spotted by customers.
 
@@ -403,14 +405,180 @@ static T Method(T input) where T : new()
 }
 ```
 
+[[Back to top of *Generics in Depth*]](#generics-in-depth)
+
 ### Inheritance
 You can inherit from generic classes by specifying the types, therefore making the sub class no longer a generic type, 
 you can keep the types generic, or you can do a mixture of the two.
 
+[[Back to top of *Generics in Depth*]](#generics-in-depth)
 
 [[Back to Top]](#contents)
 
 ## Additional C# Language Features
+### Tuples
+Useful to group together related data in a more adhoc way than a class. They are simple to create and to retrieve from, like
+this:
+```
+var Person = ("Hannah", 21);
+
+Console.WriteLine($"{Person.Item1} is {Person.Item2} years old");
+```
+
+You can also specify field names, making it a bit more readable:
+```
+var Person = (Name: "Hannah", Age: 21);
+
+Console.WriteLine($"{Person.Name} is {Person.Age} years old");
+```
+
+As well as retrieving the values individually you can also unpack them all in one go, including just unpacking the ones
+you care about.
+```
+(string name, int age) = Person;
+
+//OR if you don't care about name:
+(_, int age) = Person;
+```
+
+They are often used to easily return back mulitple values from a method, however sometimes in these situations defining a 
+class would be much more readable.
+
+**Out Parameters**
+```
+public void DoSomething(int[] refType, int valType)
+{
+    refType[0] = 1000000;
+    valType = 36;
+}
+```
+
+When parameters are passed into methods, reference types will pass a reference to the values, so if you change the values
+within the method you will see these changes outside of it. However value types are passed as copies of that value, 
+therefore changes made to the value will not be seen outside of the method.
+
+When you want changes to value types to affect the original value you can use the keyword `ref`:
+```
+public void DoSomething(int[] refType, ref int valType)
+{
+    refType[0] = 1000000;
+    valType = 36;
+}
+
+int i = 0;
+int[] ints = {0, 1, 2, 3};
+DoSomething(ints, ref i);
+```
+This, however, requires the input valueType to have already been initialised. If you want to use a value without it being
+initialised, you can do this with the `out` keyword. You can even do this inline, so save declaring the variable beforehand:
+
+```
+public void DoSomething(int[] refType, out int valType)
+{
+    refType[0] = 1000000;
+    valType = 36;
+}
+
+int i;
+int[] ints = {0, 1, 2, 3};
+DoSomething(ints, out i);
+
+DoSomething(ints, out int j);
+```
+
+One fairly useful thing you can do with these is write a `Deconstruct` method for a class. This allows you to unpack a class
+into individual variables.
+```
+public class Product
+{
+    public string Description { get; }
+    public double UnitPrice { get; }
+
+    public Product(string description, double unitPrice)
+    {
+        Description = description;
+        UnitPrice = unitPrice;
+    }
+    public void Deconstruct(out string description, out double unitPrice)
+    {
+        description = this.Description;
+        unitPrice = this.UnitPrice;
+    }
+}
+
+Product productA = new Product("Carabiner", 12.99);
+(string desc, double price) = Product;
+```
+Notice you don't need to call the `Deconstruct` method. when you write a line like this, C# will look for a 
+`Deconstruct` method implementation and use that.
+
+[[Back to top of *Additional C# Language Features*]](#additional-c-language-features)
+
+### Initialisation
+When a class has publicly settable properties you can initialise them all at the first instance like this:
+```
+public class Employee
+{
+    public string Name { get; set; }
+    public double Salary { get; set; }
+    public int Grade { get; set; }
+    public Employee() {}
+
+    public Employee(string name, double salary)
+    {
+        Name = name;
+        Salary = salary;
+    }
+}
+
+Employee emp1 = new Employee { Name="Smith", Salary=20000, Grade=5 };
+```
+
+You can do similar in-line initialisation with many collections such as Dictionaries and Lists
+
+[[Back to top of *Additional C# Language Features*]](#additional-c-language-features)
+
+### Anonymous Types
+
+Anonymous types have been largely overtaken by tuples. They are a way to define a nameless object, where the compiler 
+infers types internally. They are declared like this:
+```
+var city2 = new
+{
+    Name = "Swansea",
+    Country = "Wales",
+    Longitude = 3.9,
+    Latitude = 51.6
+};
+```
+The main use of anonymous types is with LINQ which will be covered later in the course.
+
+[[Back to top of *Additional C# Language Features*]](#additional-c-language-features)
+
+### Extension Methods
+
+Extension methods allow you to add functionality to objects which don't allow you to inherit from them. A lot of what 
+they can do could also be acheived by static methods, however it is often more readable to use it a method as if it is
+part of the original object. It has the added benefit that extension methods will show up in intellisense, making programming
+easier.
+```
+public static class MyStringExtensionMethods
+{
+    public static int CountLetterA(this String str)
+    {
+        int count = 0;
+        for (int i = 0; i < str.Length; i++)
+        if (str[i] == 'A' || str[i] == 'a')
+        count++;
+        return count;
+    }
+}
+
+string abc = "abc";
+int numOfAs = abc.CountLetterA();
+```
+
+One thing extension methods allow you to do which you couldn't do without them is extend interfaces.
 
 [[Back to Top]](#contents)
 

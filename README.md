@@ -564,6 +564,8 @@ The main use of anonymous types is with LINQ which will be covered later in the 
 
 ### Extension Methods
 
+[[Example Code]](ExtensionMethods)
+
 Extension methods allow you to add functionality to objects which don't allow you to inherit from them. A lot of what 
 they can do could also be acheived by static methods, however it is often more readable to use it a method as if it is
 part of the original object. It has the added benefit that extension methods will show up in intellisense, making programming

@@ -352,6 +352,7 @@ Visual studio makes it easy to package and upload your own NuGet Packages, local
 [[Back to Top]](#contents)
 
 ## Generics in Depth
+[code](Generics/Generics)
 Compile errors are better than runtime errors. Compile errors are spotted by developers early on and won't get past 
 a build or a pull request. Runtime errors can be harder to spot and therefore are possible to be spotted by customers.
 
@@ -405,7 +406,6 @@ static T Method(T input) where T : new()
 ### Inheritance
 You can inherit from generic classes by specifying the types, therefore making the sub class no longer a generic type, 
 you can keep the types generic, or you can do a mixture of the two.
-
 
 
 [[Back to Top]](#contents)

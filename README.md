@@ -416,6 +416,13 @@ you can keep the types generic, or you can do a mixture of the two.
 [[Back to Top]](#contents)
 
 ## Additional C# Language Features
+
+**Contents:** 
+- [Tuples](#tuples)
+- [Initialisation](#initialisation)
+- [Anonymous Types](#anonymous-types)
+- [Extension Methods](#extension-methods)
+
 ### Tuples
 Useful to group together related data in a more adhoc way than a class. They are simple to create and to retrieve from, like
 this:

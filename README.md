@@ -593,6 +593,50 @@ One thing extension methods allow you to do which you couldn't do without them i
 
 ## LINQ to Objects
 
+**L**anguage **In**tegrated **Q**uery was created to replace using things like SQL in code. This was because when writing
+these in C# they are written as strings which means you loose all syntax highlighting, intellisense and compile errors.
+
+LINQ can use any object which implements `IEnumerable` as a data source. It uses the `from`, `where` `select` keywords
+like SQL but they are lower case. An example query looks like this:
+
+```
+string[] cities = { "Boston", "New York", "Dallas", "St. Paul", "Las Vegas" };
+
+var subset = from c in cities
+             where c.Contains(" ")
+             orderby c.Length
+             ascending
+             select c;
+```
+
+Once difference between SQL and LINQ is the order you put the statements in. This is to help intellisense suggestion as 
+the `from` step tells intellisense the type. The `select` statement must be the last line of the query.
+
+You can also change the values returned in the select statement, for example instead of selecting `c` you could select
+`c.Population` and get back just that *column*. You can also return a string containing the info you need.
+```
+var summaries = from c in cities
+                select String.Format("{0} in {1} has population of {2}.",
+                                    c.Name, c.State, c.Population);
+```
+
+Or you can give back a subset of all columns using an anonymous type, called a projection.
+```
+var info = from c in cities
+            where c.Population < 500000
+            select new { c.Name, c.State };
+```
+
+You can also write queries in method syntax:
+```
+var subset = cities.Where(c => c.Population > 500000).Select(c.Name);
+```
+
+You can also perform set based operations on LINQ queries 
+```
+var diff = (from t in myTeams select t).Except(from t2 in yourTeams select t2);
+```
+
 [[Back to Top]](#contents)
 
 ## What's New in C# 8

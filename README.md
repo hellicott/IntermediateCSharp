@@ -19,6 +19,8 @@
 - [NuGet packages](#nuget-packages)
 
 [Generics in Depth](#generics-in-depth)
+- [Constraints](#constraints)
+- [Inheritance](#inheritance)
 
 [Additional C# Language Features](#additional-c-language-features)
 
@@ -356,6 +358,55 @@ a build or a pull request. Runtime errors can be harder to spot and therefore ar
 Using raw types which involved using the type `object` rather than a specific type will not give compiler errors, 
 but can have a problem at runtime. and as discussed, we don't want that. Generic types allow for type-safe classes 
 which will compiler errors rather than holding back til runtime. It is usually better practice to use these.
+
+You can also have generic methods. The syntax is similar, using `<T>` to specify the type.
+```
+static void GenericMethod<T>(T obj)
+{
+    // do stuff
+}
+```
+
+### Constraints
+This however, isn't often very useful as there's only 4 method that will work for all types.
+
+Instead, we can specify which interfaces that T must implement to be able to use more methods. Like this:
+```
+static T Max<T> (T a, T b) where T : IComparable<T>
+{
+    if (a.CompareTo(b) < 0)
+    {
+        return a;
+    }
+    else
+    {
+        return b;
+    }
+}
+```
+Here we're ensuring all input types implement the IComparable interface and therefore we can safely use the
+`CompareTo()` method. 
+
+You can also use constraints to accept only value types (`T : struct`) or reference types (`T : class`). In order to 
+return a null value as T you must ensure that T is a reference type as value types cannot be null. If you want to allow
+both reference types and value types then instead of returning null you can return `default(T)` which will select a null
+value for reference types and the default value (e.g. 0 for ints) for value types.
+
+Another useful constraint is that the input type has a default constructor (`T : new()`). This would allow to write the 
+following:
+```
+static T Method(T input) where T : new()
+{
+    T output = new T();
+    return output;
+}
+```
+
+### Inheritance
+You can inherit from generic classes by specifying the types, therefore making the sub class no longer a generic type, 
+you can keep the types generic, or you can do a mixture of the two.
+
+
 
 [[Back to Top]](#contents)
 

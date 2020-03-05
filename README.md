@@ -650,6 +650,7 @@ var diff = (from t in myTeams select t).Except(from t2 in yourTeams select t2);
 **Contents:**
 - [Nullable Types](#nullable-types)
 - [Pattern Matching](#pattern-matching)
+- [Asynchronous Streams](#asynchronous-streams)
 - [Even More New Stuff](#even-more-new-stuff)
 
 ### Nullable types
@@ -766,6 +767,83 @@ notice the `_` being used for default values.
 
 [[Back to top of *What's New in C# 8*]](#whats-new-in-c-8)
 
+### Asynchronous Streams
+
+Before the C# 8 changes you might fetch data from a slow source like this:
+```
+//old implementation
+public static async Task<IEnumerable<int>> FetchSlowData()
+{
+    List<int> items = new List<int>();
+    for (int i = 1; i <= 10; i++)
+    {
+        items.Add(i);
+    }
+    return items;
+}
+```
+This would return an `IEnumerable<int>` after all the data had been collected.
+Then to use the data you could do something like this:
+```
+//old implementation
+private static async Task Enumeration_SlowData()
+{
+    foreach (var item in await DataSrc.FetchSlowData())
+    {
+        Console.WriteLine(item);
+    }
+}
+```
+The downside to doing it in this way is that the code has to wait until all the data has been collected before is can 
+loop over it.
+
+C# 8 brings a solution to this - allowing the loop to iterate over the data as soon as each item becomes available. Here's
+how you'd do it:
+```
+//new implementation
+public static async IAsyncEnumerable<int> FetchSlowData()
+{
+    for (int i = 1; i <= 10; i++)
+    {
+        yield return i;
+    }
+}
+```
+Notice the new type `IAsyncEnumerable<T>` which is an async stream. This method yields one value as a time, as soon as
+it's available. This allows you to loop over the data like this:
+```
+private static async Task Enumeration_SlowData()
+{
+    await foreach (var item in DataSrc.FetchSlowData())
+    {
+        Console.WriteLine(item);
+    }
+}
+```
+Notice the `await` keyword now applies to the entire loop, rather than just the method which retrieves the data.
+
+Another way you could use the data is using the async enumerable API directly:
+```
+private static async Task Enumeration_SlowData()
+{
+    IAsyncEnumerator<int> asyncEnum = DataSrc.FetchSlowData().GetAsyncEnumerator();
+    try
+    {
+        while (await asyncEnum.MoveNextAsync())
+        {
+            int item = asyncEnum.Current;
+            Console.WriteLine(item);
+        }
+    }
+    finally
+    {
+        await asyncEnum.DisposeAsync();
+    }
+}
+```
+
+[[Back to top of *What's New in C# 8*]](#whats-new-in-c-8)
+
 ### Even more new stuff
 
 **Null-Coalescing Assignment Operator**
@@ -850,6 +928,8 @@ This is avoiding intruducing the horrors of multiple inheritance by still not al
 [[Back to Top]](#contents)
 
 ## Monitoring and Debugging Applications
+
+
 
 [[Back to Top]](#contents)
 

@@ -589,9 +589,13 @@ int numOfAs = abc.CountLetterA();
 
 One thing extension methods allow you to do which you couldn't do without them is extend interfaces.
 
+[[Back to top of *Additional C# Language Features*]](#additional-c-language-features)
+
 [[Back to Top]](#contents)
 
 ## LINQ to Objects
+
+[[Example Code]](LINQ/LINQ/LINQ)
 
 **L**anguage **In**tegrated **Q**uery was created to replace using things like SQL in code. This was because when writing
 these in C# they are written as strings which means you loose all syntax highlighting, intellisense and compile errors.
@@ -637,9 +641,211 @@ You can also perform set based operations on LINQ queries
 var diff = (from t in myTeams select t).Except(from t2 in yourTeams select t2);
 ```
 
+[[Back to top of *LINQ to Objects*]](#linq-to-objects)
+
 [[Back to Top]](#contents)
 
 ## What's New in C# 8
+
+**Contents:**
+- [Nullable Types](#nullable-types)
+- [Pattern Matching](#pattern-matching)
+- [Even More New Stuff](#even-more-new-stuff)
+
+### Nullable types
+Value types are not nullable, but you can create nullable versions of them. You create them using this syntax:
+```
+int? nullableNum;
+```
+Nullable values have 2 new properties you can use on them `HasValue` and `Value`. One thing to be aware of is that if 
+you wanted to use a nullable with a normal type, you could get null reference errors. For example:
+```
+int num2 = nullableNum;
+```
+would throw an error since `nullableNum` could be `null` and `num2` cannot contain null values. To safely do this there
+are a couple of options:
+```
+// Give the value which is type int, not int?
+int num2 = nullableNum.Value;
+
+// Have a default value
+int num2 = nullableNum ?? 0;
+```
+
+Reference types have always been nullable so there was no need to make them so. However in C# 8 they added the ability
+to have non-nullable reference types. This can be very useful for objects which must contain other objects, for example
+a `Car` must contain an `Engine`. With a nullable reference you could come to errors if you assume that the `Engine` is
+not null.
+```
+class Car
+{
+    private Person _driver;
+    private Engine _engine;
+    
+    public Car()
+    {
+        // do stuff
+    }
+}
+```
+In the above example both `_driver` and `_engine` and nullable reference types so if we were to try to access values in
+`_engine` without checking if it was null we'd get an error. To make a non-nullable type we use the same syntax as with
+nullable value types, so instead of specifying the non-nullable type we instead specify the nullable ones. Like this:
+```
+#nullable enable
+
+class Car
+{
+    private Person? _driver;
+    private Engine _engine;
+    
+    public Car()
+    {
+        // do stuff
+    }
+}
+```
+Notice the `#nullable enable` which is necessary to be able to use these non-nullable types, to keep compatibility with
+older C# versions.
+
+By using these types we should be able to avoid a lot of `NullReferenceException`s, so it is becoming increasingly 
+advised to use these in new projects.
+
+NOTE: In order to use these you must add `<Nullable>enable</nullable>` to your csproj to enable support.
+
+[[Back to top of *What's New in C# 8*]](#whats-new-in-c-8)
+
+### Pattern Matching
+**Switch statements**
+
+Added syntactic sugar for simple switches
+```
+string name;
+switch(month)
+{
+    case 1:
+        name = "January";
+        break;
+    case 2:
+    ...
+};
+
+// can become:
+string name = month switch
+{
+    1 => "January",
+    2 => "February",
+    ...
+};
+```
+
+You can also now use switches on tuples:
+```
+switch (value1, value2, value3)
+{
+    case (aaa, bbb, ccc):
+        // Do something
+        break;
+    case (ddd, eee, fff):
+        // Do something else
+        break;
+    …
+}
+```
+and use deconstructors:
+```
+string fullNum = telNum switch
+{
+    TelNum("UK", var num) => $"+44 {num}",
+    TelNum("NO", var num) => $"+47 {num}",
+    TelNum("SG", var num) => $"+65 {num}",
+    _ => $"[{telNum.Country}] {telNum.Number}"
+};
+```
+notice the `_` being used for default values.
+
+[[Back to top of *What's New in C# 8*]](#whats-new-in-c-8)
+
+### Even more new stuff
+
+**Null-Coalescing Assignment Operator**
+
+The `??` is called the null-coalescing operator. You can now use them for assignment too using `??=`. Here's and example:
+```
+List<int> numbers = MaybeGetList(); // This may be null
+(numbers ??= new List<int>()).Add(42);
+```
+
+**Ranges**
+
+You can, quite usefully, use ranges to access values in an array (not yet on all collections), similar to slicing in python.
+```
+// get values from a(inclusive) to b (exclusive)
+arr[a..b];
+
+// get values from beginning up to b (exclusive)
+arr[..b];
+
+// get values from a (inclusive) to end
+arr[a..];
+
+// get last n values
+arr[^n];
+
+// get all values except last n
+arr[..^n];
+```
+
+**Disposing Objects**
+
+Previously `using` statements dispose of the object at the end of the `using` block. However in C# 8 you no longer need 
+a block for a `using` statement, instead the object will desposed at the end of the code block it is contained it. For 
+example if it's contained in a method:
+
+```
+// before:
+private static void UsingBlocks1(string inFilename)
+{
+    using (var reader = new StreamReader(inFilename))
+    {
+        var contents = reader.ReadToEnd();
+        Console.WriteLine(contents);
+    } <-- object disposed of here
+}
+
+//after:
+private static void UsingDeclarations(string inFilename)
+{
+    using var reader = new StreamReader(inFilename);
+    var contents = reader.ReadToEnd();
+    Console.WriteLine(contents);
+} <-- object disposed of here
+```
+
+this allows code to be a little tidier.
+
+**Default Interface Implementation**
+
+C# 8 allows you to write a concrete implementation for a method. This allows you to simply use the default implementation
+when there is common code accross implementations, therefore avoiding code duplication. It still allows overriding for
+when you need more specific functionality in an implementation.
+
+It can be done like this:
+```
+interface IMyInterface
+{
+    void Method1(int i);
+    void Method2(double d);
+    void Method3(String s)
+    {
+        Console.WriteLine($"IParentInterface.Method3 received {s}");
+    }
+}
+```
+
+This is avoiding intruducing the horrors of multiple inheritance by still not allowing data to be held in an interface.
+
+[[Back to top of *What's New in C# 8*]](#whats-new-in-c-8)
 
 [[Back to Top]](#contents)
 

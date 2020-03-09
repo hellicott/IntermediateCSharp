@@ -23,51 +23,52 @@
 
 ### Memory
 
-#### Value Types
+**Value Types**
 
-e.g. int, doubles, bools
+e.g. ints, doubles, bools
 
 The actual values get saved in the stack as they are fixed size.
-The stack is evaluated at compile.
+The stack is evaluated at compile time.
 
-#### Reference Types
+**Reference Types**
 
-e.g. string and complex data types
+e.g. strings, complex data types
 
 The actual value gets saved in the heap and a reference to that value is saved in the stack. 
 This is because we don't know how large the object might be.
 The heap is evaluated at run time.
 
-#### Memory Allocation
+**Memory Allocation**
 
-In java all class/own data types are reference types.
-In C# we have a choice over this. We can decide which is more relevant.
-For example a DateTime object simple stores a number. This is more efficiently stored in the stack 
+In java all user definied data types are reference types.
+In C# we have a choice over this - we can decide which is more relevant.
+For example a `DateTime` object simple stores a number. This is more efficiently stored in the stack 
 rather than as a reference type.
 In C# a `class` is saved as a reference type. A `struct` is stored as a value type.
-Mostly a class is what you want, however sometimes, like with a DateTime, a struct is more efficient.
-You can't use inheritance in a struct, however you can implement interfaces.
+Mostly a `class` is what you want, however sometimes, like with a `DateTime`, a `struct` is more efficient.
+You can't use inheritance in a `struct`, however you can implement interfaces.
+
+For a value type doing this will allocate the memory for that object:
 
 ```
 DateTime dt;
 ```
-For a value type doing this will allocate the memory for that object 
 
+ This will both allocate the memory and call the constructor:
 ```
 DateTime dt = new DateTime()
 ```
-This will both allocate the memory and call the constructor
 
+For a reference type no memory is allocated when you do this:
 ```
 Thing t;
 ```
-For a reference type no memory is allocated when you do this. 
 
+It's not until you use the `new` key word and 
+call the constructor that memory is allocated:
 ```
 Thing 1 = new thing();
 ```
-It's not until you use the `new` key word and 
-call the constructor that memory is allocated
 
 [[Back top of *Delegates, events and lambda expressions*]](#delegates-events-and-lambda-expressions)
 
@@ -77,22 +78,22 @@ Help prevent code duplication.
 
 Give a function as a parameter, allowing you to use the same code to call whatever function you like.
 
-The Delegate is like a type
+A `delegate` is like a type
 
 ```
 public delegate double MathsFunction(double x);
 ```
 You have to specify the input and return value and then any function which matches these 
-values will be allowed to be passed in.
+types will be allowed to be passed in.
 
 You can use it like this:
 ```
 var x = doSomething(Math.Sin, a, b);
 ```
 Notice we are not calling the `Math.Sin` function as we are not using brackets. Instead we are giving it as 
-a delegate. This is allowed because the function has the same input and output values as defined in the delegate.
+a `delegate`. This is allowed because the function has the same input and output types as defined in the `delegate`.
 
-You can also have anonymous delegates. If you don't want to create a new Delegate type, you could achieve the same thing.
+You can also have anonymous delegates. If you don't want to create a new delegate type, you could achieve the same thing.
 
 So this:
 ```
@@ -135,7 +136,7 @@ double Double (double x)
 }
 ```
 The above function is good, but if we wanted to also have a `Triple` or `Quadruple` function we'd have a lot
-of code duplication but hardly any changes. 
+of code duplication with hardly any changes. 
 
 Instead we might want to use a lambda function:
 
@@ -144,9 +145,10 @@ var x = doSomething(x => x * 2, a, b);
 ```
 
 This allows you to use any number as a multiplier, including a variable. 
-It might be less readable, however, as you have to unnderstand the code rather than a nicely named function.
 
-Another option would be to use a local function:
+It might be less readable, however, as you have to understand the code rather than a nicely named function.
+
+Another option would be to use a local function (a function declared within another function):
 ```
 def doSomething()
 {
@@ -170,7 +172,7 @@ For example:
 DateTime date1 = datetime.now();
 DateTime date2 => datetime.now();
 ```
-Here `date1` will always be the same when you access it. However `date 2` will call the `datetime.now()` 
+Here `date1` will always be the same when you access it. However `date2` will call the `datetime.now()` 
 function everytime you access it.
 
 #### Nullables
@@ -190,25 +192,26 @@ var x = (doSomething) ? "yay" : "Oh no";
 [[Back top of *Delegates, events and lambda expressions*]](#delegates-events-and-lambda-expressions)
 
 ### Events
-Events are very similar to delegates they use the `event` key word.
+Events are very similar to delegates. They use the `event` key word.
 
-Both allow you to multicast.
+Both one difference is that they allow you to multicast:
 ```
 MathsFunction f = Math.Cos;
 f += Math.Sin;
 ```
 Using this function will carry out both the sin and cos, however it will only return the result of the last one
-*not* chain them together. You would usually use multicasting with functions which have side effects but not return values
+**not** chain them together. You would usually use multicasting with functions which have side effects but not return values
 as you would only get the return of one value. 
 
-If an event hasn't been subscribed to (nothing uses it in a multicast) then its value will be null. You should always
-check for null before raising it to avoid `NullReferenceExceptions`. You can do this with an if statement:
+If an event hasn't been subscribed to (nothing uses it in a multicast) then its value will be `null`. You should always
+check for `null` before raising it to avoid a `NullReferenceException`. You can do this with an `if` statement:
 ```
 if (Overdrawn != null)
 {
     Overdrawn(this, new BankAccountEventArgs(balance, accountHolder));
 }
 ```
+Or using the syntactic sugar:
 ```
 Overdrawn?.Invoke(this, new BankAccnoutEventArgs(balance, accountHolder));
 ```
@@ -251,8 +254,8 @@ acc1.Overdrawn += delegate(object sender, BankAccountEventArgs e)
 - [NuGet packages](#nuget-packages)
 
 ### Exception handling
-This is *not* for finding errors or fixing them, it is only for making the errors known when they happen - a communitcation
-mechanism to send up so someone/something else can deal with it. In this way it is similar to an event.The main
+This is **not** for finding errors or fixing them, it is only for making the errors known when they happen - a communication
+mechanism to send up so someone/something else can deal with it. In this way it is similar to an event. The main
 difference between events and excpetions is that exceptions *must* be caught, where as events do no necessarily need to be 
 handled.
 
@@ -300,14 +303,16 @@ To throw an exception you use the `throw` key word
 
 Arrays are always reference types. When creating one you speficy the size which is used for memory allocation. The downside
 here is that once you have set this you can't increase its size. It very unusual to know the size of a collection before
-you want to use it so often other collections are used.
+you want to use it so often other collections are used. This fixed size can be more efficient though, so sometimes it can be 
+beneficial to cast a list to an array if you know no more elements will be added, for example after looping through and object
+and finding all the instances of an required value.
 
 **Generic collections** 
 
 e.g. `List<T>`, `HashSet<T>` where `T` is the type and `Dictionary<K,V> where `K` and `V` are the types of the keys and 
 the values
 
-These force all elements to be the same type (or you'll get a compilation error). Anoth benefit is that you can add as many
+They are type safe. These force all elements in the collection to be the same type (or you'll get a compilation error). Another benefit is that you can add as many
 elements as you want to them at any time.
 
 **Raw collections**
@@ -319,15 +324,6 @@ in there and can involve a lot of casting.
 
 ### Regular Expressions
 Search for particular text items in strings using `Regex` class
-
-|RE|Desc|Matches| Doesn't match|
-|---|---|---|---|
-|abc|matches the exact letters in the exact order|abc|def|
-|.|matched any single character| r| rawr|
-|[a-zA-Z]| matches any character in the set|p|9|
-|[^a-zA-Z]|...
-|\d|A digit|6|q
-|\w|...
 
 Useful Regex methods:
 `Match` will find the first match in the string.
@@ -356,7 +352,7 @@ Visual studio makes it easy to package and upload your own NuGet Packages, local
 [[Example Code]](Generics/Generics)
 
 Compile errors are better than runtime errors. Compile errors are spotted by developers early on and won't get past 
-a build or a pull request. Runtime errors can be harder to spot and therefore are possible to be spotted by customers.
+a build or a pull request. Runtime errors can be harder to spot and therefore could be missed and only found by customers.
 
 Using raw types which involved using the type `object` rather than a specific type will not give compiler errors, 
 but can have a problem at runtime. and as discussed, we don't want that. Generic types allow for type-safe classes 
@@ -387,12 +383,12 @@ static T Max<T> (T a, T b) where T : IComparable<T>
     }
 }
 ```
-Here we're ensuring all input types implement the IComparable interface and therefore we can safely use the
+Here we're ensuring all input types implement the `IComparable` interface and therefore we can safely use the
 `CompareTo()` method. 
 
 You can also use constraints to accept only value types (`T : struct`) or reference types (`T : class`). In order to 
-return a null value as T you must ensure that T is a reference type as value types cannot be null. If you want to allow
-both reference types and value types then instead of returning null you can return `default(T)` which will select a null
+return a `null` value as `T` you must ensure that `T` is a reference type as value types cannot be `null`. If you want to allow
+both reference types and value types then instead of returning `null` you can return `default(T)` which will select a null
 value for reference types and the default value (e.g. 0 for ints) for value types.
 
 Another useful constraint is that the input type has a default constructor (`T : new()`). This would allow to write the 
@@ -600,7 +596,7 @@ One thing extension methods allow you to do which you couldn't do without them i
 **L**anguage **In**tegrated **Q**uery was created to replace using things like SQL in code. This was because when writing
 these in C# they are written as strings which means you loose all syntax highlighting, intellisense and compile errors.
 
-LINQ can use any object which implements `IEnumerable` as a data source. It uses the `from`, `where` `select` keywords
+LINQ can use any object which implements `IEnumerable` as a data source. It uses the `from`, `where`, `select` keywords
 like SQL but they are lower case. An example query looks like this:
 
 ```
